@@ -24,6 +24,11 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: fetch and merge pr
+        run: git fetch origin pull/${{ github.event.pull_request.number }}/head && git -c user.email=localmerge@github.com -c user.name=localmerge merge --no-ff ${{ github.event.pull_request.head.sha }}
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
